@@ -3,9 +3,20 @@ from auth import authenticate, authenticate_search
 import json
 from add_to_db import upload_data
 from tweet_entity import TweetEntity
+import requests
+from config import FIREBASE_URL
+import json
 
 with open("cities", "r") as f:
     cities = f.read().split("\n")
+    cities = cities[:30]
+    
+def is_exists_in_database(tweet_id):
+    r = requests.get(FIREBASE_URL)
+    database = json.dumps(r.text)
+    if str(tweet_id) in database:
+        return True
+    return False
 
 keywords = ['oxygen', 'remdesiver', 'icu', 'hospital beds']
 search_keyword = "verified"
@@ -25,6 +36,8 @@ for city in cities:
             found_additional_keywords = [keyword]
             if "retweeted_status" not in tweet._json.keys():
                 tweet_id = tweet._json["id"]
+                if is_exists_in_database(tweet_id):
+                    continue
                 tweet_time = tweet._json["created_at"]
                 tweet_text = tweet._json["text"]
                 ignore = 0
