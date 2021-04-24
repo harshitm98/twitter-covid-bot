@@ -8,6 +8,8 @@ with open("cities", "r") as f:
     cities = f.read().split("\n")
 
 keywords = ['oxygen', 'remdesiver', 'icu', 'hospital beds']
+search_keyword = "verified"
+ignore_keywords = ['leads']
 
 auth = authenticate_search()
 api = tweepy.API(auth, wait_on_rate_limit=True)
@@ -16,8 +18,8 @@ for city in cities:
     print("[*] Searching for resources in {}...".format(city))
     for keyword in keywords:
         print("\t Looking for {}...".format(keyword), end=" -> ")
-        query = city + " " + keyword + " verified"
-        tweets = api.search(query, count=1000)
+        query = city + " " + keyword + " " + search_keyword
+        tweets = api.search(query, count=100)
         print("Found: {} tweets".format(len(tweets)))
         for tweet in tweets:
             found_additional_keywords = [keyword]
@@ -25,6 +27,13 @@ for city in cities:
                 tweet_id = tweet._json["id"]
                 tweet_time = tweet._json["created_at"]
                 tweet_text = tweet._json["text"]
+                ignore = 0
+                for ignore_keyword in ignore_keywords:
+                    if ignore_keyword in tweet_text:
+                        ignore = 1
+                        break
+                if ignore == 1:
+                    continue
                 try:
                     tweet_link = tweet._json["entities"]["urls"][0]["expanded_url"]
                 except:
