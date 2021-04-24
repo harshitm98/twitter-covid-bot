@@ -53,9 +53,8 @@ print(already_replied_to_tweets)
 for city in cities:
     print("[*] Searching for people in help in {}".format(city))
     for keyword in keywords:
-        # query = city + " " + keyword + " "  + " ".join(search_keyword)
-        test_query = "Mumbai required oxygen " + "thisisatestforabotimcreatingpls"
-        tweets = api_search.search(test_query, count=100)
+        query = city + " " + keyword + " "  + " ".join(search_keyword)
+        tweets = api_search.search(query, count=100)
         for tweet in tweets:
             found_keywords = []
             tweet_id = tweet._json["id"]
@@ -63,7 +62,7 @@ for city in cities:
                 continue
             tweet_text = tweet._json["text"]
             tweet_time = tweet._json["created_at"]
-            print("[-] Found a tweet with tweet id: {}\tText: {}".format(tweet_id, tweet_text))
+            print("[-] Found a tweet with tweet id: {}\tText: {}".format(tweet_id, tweet_text), end=" -> ")
             for all_keyword in keywords:
                 if all_keyword in tweet_text.lower():
                     found_keywords.append(all_keyword)
@@ -78,10 +77,9 @@ for city in cities:
             reply_string += "Here's a list of recent tweets based on your keywords:\r\n"  
             for i in range(0, 5):
                 reply_string += list_of_available_links[list_of_keys[i]] + "\r\n"
-            # api_reply.update_status(status = reply_string, in_reply_to_status_id = tweet_id, auto_populate_reply_metadata=True)
-            # upload_replied(tweet_id)
-        break
-    break
+            api_reply.update_status(status = reply_string, in_reply_to_status_id = tweet_id, auto_populate_reply_metadata=True)
+            upload_replied(tweet_id)
+            print("Replied with resources.")
                     
         
         
