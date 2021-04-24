@@ -4,3 +4,4 @@ __pycache__/*
 venv/*
 config.pyc
 cities
+completed_cities
