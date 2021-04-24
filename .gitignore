@@ -5,3 +5,4 @@ venv/*
 config.pyc
 cities
 completed_cities
+auth.pyc
