@@ -32,3 +32,4 @@ yarn-debug.log*
 yarn-error.log*
 phantomjs
 ghostdriver.log
+create_data.py

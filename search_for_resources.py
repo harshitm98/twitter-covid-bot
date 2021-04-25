@@ -30,7 +30,7 @@ for city in cities:
     for keyword in keywords:
         print("\t Looking for {}...".format(keyword), end=" -> ")
         query = city + " " + keyword + " " + search_keyword
-        tweets = api.search(query, count=100)
+        tweets = api.search(query, count=100, result_type = "recent")
         print("Found: {} tweets".format(len(tweets)))
         for tweet in tweets:
             found_additional_keywords = [keyword]

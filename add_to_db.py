@@ -14,6 +14,7 @@ def authenticate_firebase():
         "returnSecureToken": "true"
     }
     data = str(val)
+    auth_token = (('auth', ''),)
     try:
         response = requests.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword', headers=headers, params=params, data=data)
         output = response.json()
@@ -49,4 +50,4 @@ def upload_replied(tweet_id):
     if r.status_code != 200:
         print("Some error occured. Error code: {}".format(r.status_code))
     
-# upload_data(TweetEntity("12323456789" , "Mumbai", "oxygen, remdesiver, ventilator, icu", "https://twitter.com/", "time"))
+#  upload_data(TweetEntity("12323456789" , "Mumbai", "oxygen, remdesiver, ventilator, icu", "https://twitter.com/", "time"))
