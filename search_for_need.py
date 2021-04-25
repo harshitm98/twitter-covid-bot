@@ -50,13 +50,12 @@ def get_already_replied_tweets():
                 
 database = fetch_database()
 already_replied_to_tweets = get_already_replied_tweets()
-print(already_replied_to_tweets)
 
 for city in cities:
     print("[*] Searching for people in help in {}".format(city))
     for keyword in keywords:
-        query = city + " " + keyword + " "  + " ".join(search_keyword)
-        tweets = api_search.search(query, count=100)
+        query = city + " " + keyword + " "  + " OR ".join(search_keyword)
+        tweets = api_search.search(query, count=100, result_type = "recent")
         for tweet in tweets:
             if "retweeted_status" not in tweet._json.keys():
                 found_keywords = []
@@ -65,7 +64,7 @@ for city in cities:
                     continue
                 tweet_text = tweet._json["text"]
                 tweet_time = tweet._json["created_at"]
-                print("[-] Found a tweet with tweet id: {}\tText: {}".format(tweet_id, tweet_text), end=" -> ")
+                print("[-] Found a tweet with tweet id: {}".format(tweet_id), end=" -> ")
                 for all_keyword in keywords:
                     if all_keyword in tweet_text.lower():
                         found_keywords.append(all_keyword)

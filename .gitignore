@@ -33,3 +33,6 @@ yarn-error.log*
 phantomjs
 ghostdriver.log
 create_data.py
+find_old_tweets.py
+run.log
+covid.csv
