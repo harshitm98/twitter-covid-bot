@@ -25,19 +25,9 @@ def authenticate_firebase():
         print("Authentication error!")
     return auth_token
 
-def upload_data(tweet_information):
-    random_int = random.getrandbits(128)
-    data = { 
-        str(random_int): {
-            "id": tweet_information.tweet_id,
-            "location": tweet_information.location, 
-            "keywords" : tweet_information.keywords,
-            "tweet_link": tweet_information.tweet_link,
-            "time": tweet_information.time
-        }
-    }
+def upload_data(data_to_upload):
     auth_token = authenticate_firebase()
-    r = requests.patch(FIREBASE_URL, data=json.dumps(data), params = auth_token)
+    r = requests.patch(FIREBASE_URL, data=json.dumps(data_to_upload), params = auth_token)
     if r.status_code != 200:
         # TODO: Write into a separate error.log files
         print("Some error occurred. Error code: {}".format(r.status_code))
