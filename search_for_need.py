@@ -12,7 +12,8 @@ with open("cities", "r") as f:
     cities = cities[:30]
 
 keywords = ['oxygen', 'remdesiver', 'icu', 'hospital beds', 'plasma'] 
-search_keyword = ['required', 'leads']
+search_keyword = "required OR leads"
+ignore_bots = "-ShariqueAly -findthecolors"
 
 auth_search = authenticate_search()
 api_search = tweepy.API(auth_search, wait_on_rate_limit=True)
@@ -54,7 +55,7 @@ already_replied_to_tweets = get_already_replied_tweets()
 for city in cities:
     print("[*] Searching for people in help in {}".format(city))
     for keyword in keywords:
-        query = city + " " + keyword + " "  + " OR ".join(search_keyword)
+        query = city + " " + keyword + " " + search_keyword + " " + ignore_bots
         tweets = api_search.search(query, count=100, result_type = "recent")
         for tweet in tweets:
             if "retweeted_status" not in tweet._json.keys():

@@ -21,6 +21,7 @@ def is_exists_in_database(tweet_id):
 keywords = ['oxygen', 'remdesiver', 'icu', 'hospital beds', 'plasma']
 search_keyword = "verified"
 ignore_keywords = "-needed -required -leads"
+ignore_bots = "-ShariqueAly -findthecolors"
 
 auth = authenticate_search()
 api = tweepy.API(auth, wait_on_rate_limit=True)
@@ -29,7 +30,7 @@ for city in cities:
     print("[*] Searching for resources in {}...".format(city))
     for keyword in keywords:
         print("\t Looking for {}...".format(keyword), end=" -> ")
-        query = city + " " + keyword + " " + search_keyword + " " + ignore_keywords
+        query = city + " " + keyword + " " + search_keyword + " " + ignore_keywords + " " + ignore_bots
         tweets = api.search(query, count=100, result_type = "recent")
         print("Found: {} tweets".format(len(tweets)))
         for tweet in tweets:
