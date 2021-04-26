@@ -39,5 +39,7 @@ def upload_replied(tweet_id):
     r = requests.patch(FIREBASE_REPLIED_URL, data=json.dumps(data), params = auth_token)
     if r.status_code != 200:
         print("Some error occured. Error code: {}".format(r.status_code))
+    else:
+        print("Replied with resources!")
     
 #  upload_data(TweetEntity("12323456789" , "Mumbai", "oxygen, remdesiver, ventilator, icu", "https://twitter.com/", "time"))

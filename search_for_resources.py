@@ -24,6 +24,7 @@ keywords = ['oxygen', 'remdesiver', 'icu', 'hospital beds', 'plasma']
 search_keyword = "verified"
 ignore_keywords = "-needed -required -leads"
 ignore_bots = "-ShariqueAly -findthecolors"
+filter_out = "-filter:retweets"
 
 auth = authenticate_search()
 api = tweepy.API(auth, wait_on_rate_limit=True)
@@ -49,7 +50,7 @@ for city in cities:
         old_tweets = 0
         retweets = 0
         print("\t Looking for {}...".format(keyword), end=" -> ")
-        query = city + " " + keyword + " " + search_keyword + " " + ignore_keywords + " " + ignore_bots
+        query = city + " " + keyword + " " + search_keyword + " " + ignore_keywords + " " + ignore_bots + " " + filter_out
         tweets = api.search(query, count=100, result_type = "recent")
         print("Found: {} tweets".format(len(tweets)), end = " ")
         for tweet in tweets:

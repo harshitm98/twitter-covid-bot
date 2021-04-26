@@ -14,6 +14,7 @@ with open("cities", "r") as f:
 keywords = ['oxygen', 'remdesiver', 'icu', 'hospital beds', 'plasma'] 
 search_keyword = "required OR leads"
 ignore_bots = "-ShariqueAly -findthecolors"
+filter_retweets = "-filter:retweets"
 
 auth_search = authenticate_search()
 api_search = tweepy.API(auth_search, wait_on_rate_limit=True)
@@ -51,6 +52,7 @@ def get_already_replied_tweets():
                 
 database = fetch_database()
 already_replied_to_tweets = get_already_replied_tweets()
+replied_in_this_session = []
 
 for city in cities:
     print("[*] Searching for people in help in {}".format(city))
@@ -61,7 +63,7 @@ for city in cities:
             if "retweeted_status" not in tweet._json.keys():
                 found_keywords = []
                 tweet_id = tweet._json["id"]
-                if str(tweet_id) in already_replied_to_tweets:
+                if str(tweet_id) in already_replied_to_tweets or str(tweet_id) in replied_in_this_session:
                     continue
                 tweet_text = tweet._json["text"]
                 tweet_time = tweet._json["created_at"]
@@ -82,12 +84,14 @@ for city in cities:
                     if i >= 5:
                         break
                     reply_string += list_of_available_links[list_of_keys[i]] + "\r\n"
+                twitter_query = "https://twitter.com/search?q=verified " + " OR ".join(found_keywords) + " " + "-needed -required -leads" 
+                reply_string = "Find lastest resources: " + twitter_query
                 try:
                     api_reply.update_status(status = reply_string, in_reply_to_status_id = tweet_id, auto_populate_reply_metadata=True)
-                except tweepy.error.TweepError:
-                    print("Duplicate tweet!")
+                except tweepy.error.TweepError as e:
+                    print("TweepError: " + str(e))
                 upload_replied(tweet_id)
-                print("Replied with resources.")
+                replied_in_this_session.append(str(tweet_id))
                 sleep(10)
         
         
