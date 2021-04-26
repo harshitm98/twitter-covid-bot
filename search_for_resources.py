@@ -8,6 +8,7 @@ from config import FIREBASE_URL
 import json
 from time import sleep
 import random
+from dateutil.parser import parse
 
 with open("cities", "r") as f:
     cities = f.read().split("\n")
@@ -37,7 +38,7 @@ def create_data(tweet_entity, data_to_upload):
     data_to_upload[str(random_int)]["id"] = tweet_entity.tweet_id
     data_to_upload[str(random_int)]["keywords"] = tweet_entity.keywords
     data_to_upload[str(random_int)]["location"] = tweet_entity.location
-    data_to_upload[str(random_int)]["time"] = tweet_entity.time
+    data_to_upload[str(random_int)]["time"] = str(parse(tweet_entity.time))
     data_to_upload[str(random_int)]["tweet_link"] = tweet_entity.tweet_link
     return data_to_upload
 
