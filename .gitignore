@@ -35,3 +35,6 @@ create_data.py
 find_old_tweets.py
 run.log
 covid.csv
+query.py
+patna_oxygen.csv
+oxygen_kolkata.csv
