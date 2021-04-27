@@ -1,5 +1,5 @@
 import tweepy
-from auth import authenticate, authenticate_search
+from auth import authenticate, authenticate_search, authenticate_another
 import requests
 from config import FIREBASE_URL, FIREBASE_REPLIED_URL
 import json
@@ -21,6 +21,9 @@ api_search = tweepy.API(auth_search, wait_on_rate_limit=True)
 
 auth_reply = authenticate()
 api_reply = tweepy.API(auth_reply, wait_on_rate_limit=True)
+
+auth_reply_1 = authenticate_another()
+api_reply_1 = tweepy.API(auth_reply_1, wait_on_rate_limit=True)
 
 def fetch_database():
     r = requests.get(FIREBASE_URL)
@@ -54,11 +57,16 @@ database = fetch_database()
 already_replied_to_tweets = get_already_replied_tweets()
 replied_in_this_session = []
 
+replied_count = 0
 for city in cities:
     print("[*] Searching for people in help in {}".format(city))
     for keyword in keywords:
         query = city + " " + keyword + " " + search_keyword + " " + ignore_bots
         tweets = api_search.search(query, count=100, result_type = "recent")
+        list_of_available_links = query_database(database, city, keyword, tweet_time)
+        list_of_keys = list(list_of_available_links.keys())
+        list_of_keys.sort()
+        list_of_keys.reverse()
         for tweet in tweets:
             if "retweeted_status" not in tweet._json.keys():
                 found_keywords = []
@@ -68,13 +76,6 @@ for city in cities:
                 tweet_text = tweet._json["text"]
                 tweet_time = tweet._json["created_at"]
                 print("[-] Found a tweet with tweet id: {}".format(tweet_id), end=" -> ")
-                for all_keyword in keywords:
-                    if all_keyword in tweet_text.lower():
-                        found_keywords.append(all_keyword)
-                list_of_available_links = query_database(database, city, found_keywords, tweet_time)
-                list_of_keys = list(list_of_available_links.keys())
-                list_of_keys.sort()
-                list_of_keys.reverse()
                 reply_string = ""
                 reply_string += "Beep bop! I'm a bot. Here's a list of recent resources based on your keywords:\r\n"  
                 if len(list_of_keys) == 0:
@@ -84,15 +85,18 @@ for city in cities:
                     if i >= 5:
                         break
                     reply_string += list_of_available_links[list_of_keys[i]] + "\r\n"
-                twitter_query = "https://twitter.com/search?q=verified " + " OR ".join(found_keywords) + " " + "-needed -required -leads" 
-                reply_string = "Find lastest resources: " + twitter_query
+                # twitter_query = "https://twitter.com/search?q=verified+" + "+OR+".join(found_keywords) + "+" + "-needed+-required+-leads" 
+                reply_string = "Find more resources: http://resources.surge.sh" + 
                 try:
-                    api_reply.update_status(status = reply_string, in_reply_to_status_id = tweet_id, auto_populate_reply_metadata=True)
+                    if replied_count % 2 == 0:
+                        api_reply.update_status(status = reply_string, in_reply_to_status_id = tweet_id, auto_populate_reply_metadata=True)
+                    else:
+                        api_reply_1.update_status(status = reply_string, in_reply_to_status_id = tweet_id, auto_populate_reply_metadata=True)
                 except tweepy.error.TweepError as e:
                     print("TweepError: " + str(e))
                 upload_replied(tweet_id)
                 replied_in_this_session.append(str(tweet_id))
-                sleep(10)
+                sleep(20)
         
         
              
