@@ -86,7 +86,7 @@ for city in cities:
                         break
                     reply_string += list_of_available_links[list_of_keys[i]] + "\r\n"
                 # twitter_query = "https://twitter.com/search?q=verified+" + "+OR+".join(found_keywords) + "+" + "-needed+-required+-leads" 
-                reply_string = "Find more resources: http://resources.surge.sh" + 
+                reply_string = "Find more resources: http://resources.surge.sh"
                 try:
                     if replied_count % 2 == 0:
                         api_reply.update_status(status = reply_string, in_reply_to_status_id = tweet_id, auto_populate_reply_metadata=True)
