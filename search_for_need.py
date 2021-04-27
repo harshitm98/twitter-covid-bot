@@ -90,8 +90,10 @@ for city in cities:
                 try:
                     if replied_count % 2 == 0:
                         api_reply.update_status(status = reply_string, in_reply_to_status_id = tweet_id, auto_populate_reply_metadata=True)
+                        replied_count += 1
                     else:
                         api_reply_1.update_status(status = reply_string, in_reply_to_status_id = tweet_id, auto_populate_reply_metadata=True)
+                        replied_count += 1
                 except tweepy.error.TweepError as e:
                     print("TweepError: " + str(e))
                 upload_replied(tweet_id)
