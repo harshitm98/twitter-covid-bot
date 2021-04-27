@@ -1,4 +1,4 @@
-from config import FIREBASE_URL, FIREBASE_REPLIED_URL, emailid, password, WEB_API_KEY, WEB_API_KEY_FETCH_DATABASE
+from config import FIREBASE_URL, FIREBASE_REPLIED_URL, emailid, password, WEB_API_KEY, WEB_API_KEY_NEW, FIREBASE_NEW_REPLIED_URL, FIREBASE_NEW_URL
 import requests
 import random
 import json
@@ -25,13 +25,6 @@ def authenticate_firebase():
         print("Authentication error!")
     return auth_token
 
-def upload_data(data_to_upload):
-    auth_token = authenticate_firebase()
-    r = requests.patch(FIREBASE_URL, data=json.dumps(data_to_upload), params = auth_token)
-    if r.status_code != 200:
-        # TODO: Write into a separate error.log files
-        print("Some error occurred. Error code: {}".format(r.status_code))
-        
 def upload_replied(tweet_id):
     random_int = random.getrandbits(128)
     data = { str(random_int) : str(tweet_id) }
@@ -44,7 +37,7 @@ def upload_replied(tweet_id):
         
 def authenticate_fetcher_database():
     headers = {'Content-Type': 'application/json',}
-    params = (('key',   WEB_API_KEY_FETCH_DATABASE),)
+    params = (('key',   WEB_API_KEY_NEW),)
     val = {
         "email" : emailid,
         "password": password,
@@ -61,5 +54,12 @@ def authenticate_fetcher_database():
     except:
         print("Authentication error!")
     return auth_token
-    
+
+def upload_data(data_to_upload):
+    auth_token = authenticate_fetcher_database()
+    r = requests.patch(FIREBASE_NEW_URL, data=json.dumps(data_to_upload), params = auth_token)
+    if r.status_code != 200:
+        # TODO: Write into a separate error.log files
+        print("Some error occurred. Error code: {}".format(r.status_code))
+        
 #  upload_data(TweetEntity("12323456789" , "Mumbai", "oxygen, remdesiver, ventilator, icu", "https://twitter.com/", "time"))

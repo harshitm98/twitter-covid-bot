@@ -4,7 +4,7 @@ import json
 from add_to_db import upload_data
 from tweet_entity import TweetEntity
 import requests
-from config import FIREBASE_URL
+from config import FIREBASE_URL, FIREBASE_NEW_URL
 import json
 from time import sleep
 import random
@@ -15,7 +15,7 @@ with open("cities", "r") as f:
     cities = cities[:30]
     
 def is_exists_in_database(tweet_id):
-    r = requests.get(FIREBASE_URL)
+    r = requests.get(FIREBASE_NEW_URL)
     database = json.dumps(r.text)
     if str(tweet_id) in database:
         return True
@@ -23,7 +23,7 @@ def is_exists_in_database(tweet_id):
 
 keywords = ['oxygen', 'remdesiver', 'icu', 'hospital beds', 'plasma']
 search_keyword = "verified"
-ignore_keywords = "-needed -required -leads"
+ignore_keywords = "-needed -required -leads -requirement -need -please"
 ignore_bots = "-ShariqueAly -findthecolors"
 filter_out = "-filter:retweets"
 
@@ -40,6 +40,7 @@ def create_data(tweet_entity, data_to_upload):
     data_to_upload[str(random_int)]["location"] = tweet_entity.location
     data_to_upload[str(random_int)]["time"] = str(parse(tweet_entity.time))
     data_to_upload[str(random_int)]["tweet_link"] = tweet_entity.tweet_link
+    data_to_upload[str(random_int)]["tweet_text"] = tweet_entity.tweet_text
     return data_to_upload
 
 
@@ -63,15 +64,13 @@ for city in cities:
                     continue
                 tweet_time = tweet._json["created_at"]
                 tweet_text = tweet._json["text"]
-                try:
-                    tweet_link = tweet._json["entities"]["urls"][0]["expanded_url"]
-                except:
-                        tweet_username = tweet._json["user"]["screen_name"]
-                        tweet_link = "https://twitter.com/" + tweet_username + "/status/" + str(tweet_id)
+                tweet_text = tweet_text.replace("\n", " ")
+                tweet_username = tweet._json["user"]["screen_name"]
+                tweet_link = "https://twitter.com/" + tweet_username + "/status/" + str(tweet_id)
                 for additional_keyword in keywords:
                     if additional_keyword in tweet_text and additional_keyword not in found_additional_keywords:
                         found_additional_keywords.append(additional_keyword)
-                create_data(TweetEntity(tweet_id, city, ", ".join(found_additional_keywords), tweet_link, tweet_time), data_to_upload)
+                create_data(TweetEntity(tweet_id, city, ", ".join(found_additional_keywords), tweet_link, tweet_time, tweet_text), data_to_upload)
             else:
                 retweets += 1
         print("-> New Tweets: {}".format(len(tweets) - old_tweets - retweets))

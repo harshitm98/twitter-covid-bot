@@ -4,13 +4,15 @@ class TweetEntity:
     keywords = []
     tweet_link = False
     time = False
+    tweet_text = ""
     
-    def __init__(self, tweet_id, location, keywords, tweet_link, time):
+    def __init__(self, tweet_id, location, keywords, tweet_link, time, tweet_text):
         self.tweet_id = tweet_id
         self.location = location
         self.keywords = keywords
         self.tweet_link = tweet_link
         self.time = time
+        self.tweet_text = tweet_text
         
     def set_tweet_id(self, tweet_id):
         self.tweet_id = tweet_id
