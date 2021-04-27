@@ -1,4 +1,4 @@
-from config import FIREBASE_URL, FIREBASE_REPLIED_URL, emailid, password, WEB_API_KEY
+from config import FIREBASE_URL, FIREBASE_REPLIED_URL, emailid, password, WEB_API_KEY, WEB_API_KEY_FETCH_DATABASE
 import requests
 import random
 import json
@@ -41,5 +41,25 @@ def upload_replied(tweet_id):
         print("Some error occured. Error code: {}".format(r.status_code))
     else:
         print("Replied with resources!")
+        
+def authenticate_fetcher_database():
+    headers = {'Content-Type': 'application/json',}
+    params = (('key',   WEB_API_KEY_FETCH_DATABASE),)
+    val = {
+        "email" : emailid,
+        "password": password,
+        "returnSecureToken": "true"
+    }
+    data = str(val)
+    auth_token = (('auth', ''),)
+    try:
+        response = requests.post('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword', headers=headers, params=params, data=data)
+        output = response.json()
+        key = output['localId']
+        token = output['idToken']
+        auth_token = (('auth', token),)
+    except:
+        print("Authentication error!")
+    return auth_token
     
 #  upload_data(TweetEntity("12323456789" , "Mumbai", "oxygen, remdesiver, ventilator, icu", "https://twitter.com/", "time"))

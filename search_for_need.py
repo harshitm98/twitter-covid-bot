@@ -13,7 +13,7 @@ with open("cities", "r") as f:
 
 keywords = ['oxygen', 'remdesiver', 'icu', 'hospital beds', 'plasma'] 
 search_keyword = "required OR leads"
-ignore_bots = "-ShariqueAly -findthecolors"
+ignore_bots = "-ShariqueAly -findthecolors -COVID19twtbot"
 filter_retweets = "-filter:retweets"
 
 auth_search = authenticate_search()
