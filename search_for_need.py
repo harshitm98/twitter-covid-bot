@@ -39,10 +39,8 @@ def query_database(database,city, keywords, time):
     list_of_link = {}
     for key in database.keys():
         if database[key]["location"] == city:
-            for keyword in keywords:
-                if keyword in database[key]["keywords"]:
-                    list_of_link[parse(database[key]["time"])] = database[key]["tweet_link"]
-                    break
+            if keyword in database[key]["keywords"]:
+                list_of_link[parse(database[key]["time"])] = database[key]["tweet_link"]
     return list_of_link
 
 def get_already_replied_tweets():
