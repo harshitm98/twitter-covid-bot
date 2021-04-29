@@ -21,7 +21,7 @@ def is_exists_in_database(tweet_id):
         return True
     return False
 
-keywords = ['oxygen', 'remdesiver', 'icu', 'hospital beds', 'plasma']
+keywords = ['oxygen', 'remdesivir', 'icu', 'hospital beds', 'plasma']
 search_keyword = "verified"
 ignore_keywords = "-needed -required -leads -requirement -need -please"
 ignore_bots = "-ShariqueAly -findthecolors"
