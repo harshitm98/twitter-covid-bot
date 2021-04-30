@@ -40,19 +40,10 @@ def upload_reply_data():
       for key in database.keys():
             data = {}
             data["_id"] = key
-            data["tweet_id"] = database[key]
-            
-            data["location"] = database[key]["location"]
-            data["keywords"] = database[key]["keywords"]
-            data["time"] = database[key]["time"]
-            data["tweet_link"] = database[key]["tweet_link"]
-            try:
-                  data["tweet_text"] = database[key]["tweet_text"]
-            except:
-                  data["tweet_text"] = "Please click the source to read this tweet"
+            data["tweet_id"] = str(database[key])
             list_of_data.append(data)
 
       collection.insert_many(list_of_data)
 
 
-upload_tweet_data()
+upload_reply_data()
