@@ -28,13 +28,12 @@ def authenticate_firebase():
 
 def upload_replied(tweet_id):
     random_int = random.getrandbits(128)
-    data = { str(random_int) : str(tweet_id) }
-    auth_token = authenticate_firebase()
-    r = requests.patch(FIREBASE_REPLIED_URL, data=json.dumps(data), params = auth_token)
-    if r.status_code != 200:
-        print("Some error occured. Error code: {}".format(r.status_code))
-    else:
-        print("Replied with resources!")
+    data = {}
+    data["_id"] = str(random_int)
+    data["tweet_id"] = str(tweet_id)
+    collection = get_collection("reply")
+    collection.insert_one(data)
+    print("Replied with resources!")
         
 def authenticate_fetcher_database():
     headers = {'Content-Type': 'application/json',}
@@ -66,3 +65,15 @@ def is_exists_in_database(tweet_id):
         return True
     return False
 
+
+def get_database(city, keyword):
+    collection = get_collection("data")
+    query = {"location": city, "keywords": {"$regex": keyword}}
+    database = collection.find(query).sort("time", -1)
+    return database
+
+def if_already_replied(tweet_id):
+    collection = get_collection("reply")
+    if collection.find_one({"tweet_id": str(tweet_id)}) != None:
+        return True
+    return False
