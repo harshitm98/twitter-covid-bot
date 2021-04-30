@@ -3,6 +3,7 @@ import requests
 import random
 import json
 from tweet_entity import TweetEntity
+from auth import get_collection
 
 
 def authenticate_firebase():
@@ -55,11 +56,13 @@ def authenticate_fetcher_database():
         print("Authentication error!")
     return auth_token
 
-def upload_data(data_to_upload):
-    auth_token = authenticate_fetcher_database()
-    r = requests.patch(FIREBASE_NEW_URL, data=json.dumps(data_to_upload), params = auth_token)
-    if r.status_code != 200:
-        # TODO: Write into a separate error.log files
-        print("Some error occurred. Error code: {}".format(r.status_code))
-        
-#  upload_data(TweetEntity("12323456789" , "Mumbai", "oxygen, remdesiver, ventilator, icu", "https://twitter.com/", "time"))
+def upload_data(list_of_data):
+    collection = get_collection("data")
+    collection.insert_many(list_of_data)
+
+def is_exists_in_database(tweet_id):
+    collection = get_collection("data")
+    if collection.find_one({"tweet_id": str(tweet_id)}) != None:
+        return True
+    return False
+
