@@ -15,12 +15,12 @@ And then the bot searches for people asking for resources using a search query l
 Currently monitored resources: `Oxygen, Remdesiver, ICU beds, Hospital beds, Plasma Donors`
 
 ### Bot in action:
-![]("images/bot.jpg")
+![](images/bot.png)
 
 ### Website
 
 Twitter bot has it's limitations. To tackle those we have created a website. Go visit it at https://resourcesbot.surge.sh
-![]("images/website.png") 
+![](images/website.png) 
 
 ### How to help
 
