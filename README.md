@@ -1,22 +1,51 @@
 # Twitter Bot for Resources during the COVID emergencies 
 
-@ResourcesBot
- searches for ver*fied leads on Twitter and replies to SOS tweets with a bunch of links. As a failsafe, we have a beta website you can go to to check if the bot missed any sources.
+### About
 
-https://resourcesbot.surge.sh
+We have created a Twitter bot([@ResourcesBot](https://twitter.com/ResourcesBot) and [@ResourcesBot1](https://twitter.com/ResourcesBot1)) that searches for **verified** medical resources such as oxygen, remdesivir, ICU, hospital beds and it then searches for people who are asking for **leads** the above mentioned resources and replies them with the resources they asked for.
 
-Want to help? Some possible PR we'd love to have
+### How it works
 
-[] Classify between relevant and irrelevant tweets <br>
-[] Add a search bar to the website <br>
-[] Pagination on website <br>
-[] Cleaner time presentation
+The bot searches for resources on Twitter using a search query like:
+`<city_name> <resource_name> verified -needed -required -leads -requirement -need -please -filter:retweets`. 
 
-If you cannot code, there are still ways to help this collective cause.
+And then the bot searches for people asking for resources using a search query like:
+`<city_name> <resource_name> required OR leads -filter:retweets`
 
-1. Please don't use the words ver*fied, oxy*en, Hosp*tal unless you have a lead. This can pollute searches. While we're building a classifier behind the scenes, you can help us and the other people searching manually optimize their results.
-2. If you're uploading a screenshot, make sure to add the keywords and numbers in the twitter textbox. Helps in being blind-friendly and helps our bot and search results of the people.
-3. Don't singularly rely on this tool, there are some amazing threads you can refer to. Here is one: https://external.sprinklr.com/insights/explorer/dashboard/601b9e214c7a6b689d76f493/tab/5?id=DASHBOARD_601b9e214c7a6b689d76f493
-4. Tag @resourcesbot under SOS tweets.
-5. donate blood, plasma (if eligible) or resource thru trusted sources (Sandeep Nailwal for example)
-6. wear a mask, maintain distance
+Currently monitored resources: `Oxygen, Remdesiver, ICU beds, Hospital beds, Plasma Donors`
+
+### Bot in action:
+![]("images/bot.jpg")
+
+### Website
+
+Twitter bot has it's limitations. To tackle those we have created a website. Go visit it at https://resourcesbot.surge.sh
+![]("images/website.png") 
+
+### How to help
+
+You can always contribute to the project. Learn how to contribute here: https://opensource.guide/how-to-contribute/
+
+For those who do not know how to code, you can still contribute by spreading the word about the bot. And by asking people:
+- who are sharing medical, you can ask them to share in this format `<city_name> <resource_available> verified`
+- who are asking for leads, you can ask them to ask for leads in this format `<city_name> <resource_needed> leads required`
+
+### Contributors
+
+Scrapping for resources and automated reply:
+- Harshit Maheshwari ([@fake_batman_](https://twitter.com/fake_batman_))
+
+Website:
+- Abhinav Srivastav ([@AbhinavMir](https://github.com/AbhinavMir/))
+- Sarthak Pranesh ([@SarthakPranesh](https://github.com/sarthakpranesh))
+
+Machine Learning:
+- Harsha Bomanna ([@harshablast](https://github.com/harshablast))
+- Arunkumar L ([@CleanPegasus](https://github.com/CleanPegasus/))
+
+### Find (other) resources:
+
+Don't singularly rely on this tool, there are some amazing threads you can refer to. Here are few: 
+- https://external.sprinklr.com/insights/explorer/dashboard/601b9e214c7a6b689d76f493/tab/5?id=DASHBOARD_601b9e214c7a6b689d76f493
+- For plasma donation: http://friends2support.org
+- Twitter search for COVID: https://covid19-twitter.in/
