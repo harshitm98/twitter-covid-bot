@@ -77,3 +77,12 @@ def if_already_replied(tweet_id):
     if collection.find_one({"tweet_id": str(tweet_id)}) != None:
         return True
     return False
+
+def get_whole_datbase():
+    collection = get_collection("data")
+    database = collection.find({})
+    return database
+
+def delete_old_tweets(ids_to_be_deleted):
+    collection = get_collection("data")
+    collection.delete_many({"_id": {"$in": ids_to_be_deleted}})

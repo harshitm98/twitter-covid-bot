@@ -42,9 +42,5 @@ sort_the_database.py
 data.json
 harsha_data.py
 harsha.csv
-leads.txt
-Ghaziabad_icu.txt
-delhi_icu.txt
-patna_plasma.txt
 clean_old_entries.py
-leads.csv
+leads/*
