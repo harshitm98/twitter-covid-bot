@@ -11,7 +11,7 @@ with open("cities", "r") as f:
     cities = f.read().split("\n")
     cities = cities[:30]
 
-keywords = ['oxygen', 'remdesivir', 'icu', 'hospital beds', 'plasma'] 
+keywords = ['oxygen', 'remdesivir', 'icu', 'hospital beds', 'plasma', 'ventilator'] 
 search_keyword = "required OR leads"
 ignore_bots = "-ShariqueAly -findthecolors"
 filter_retweets = "-filter:retweets"
