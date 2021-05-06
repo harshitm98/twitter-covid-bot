@@ -69,4 +69,6 @@ for city in cities:
             else:
                 retweets += 1
         print("-> New Tweets: {}".format(len(tweets) - old_tweets - retweets))
+    if len(list_to_upload) == 0:
+        continue
     upload_data(list_to_upload)
