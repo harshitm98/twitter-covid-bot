@@ -1,7 +1,6 @@
 import tweepy
 from auth import authenticate, authenticate_search, authenticate_another
 import requests
-from config import FIREBASE_URL, FIREBASE_REPLIED_URL, FIREBASE_NEW_REPLIED_URL, FIREBASE_NEW_URL
 import json
 from dateutil.parser import parse
 from add_to_db import upload_replied, get_database, if_already_replied

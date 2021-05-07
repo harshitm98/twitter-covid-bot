@@ -4,7 +4,6 @@ import json
 from add_to_db import upload_data, is_exists_in_database
 from tweet_entity import TweetEntity
 import requests
-from config import FIREBASE_URL, FIREBASE_NEW_URL
 import json
 from time import sleep
 import random
@@ -24,8 +23,6 @@ filter_out = "-filter:retweets"
 auth = authenticate_search()
 api = tweepy.API(auth, wait_on_rate_limit=True)
 
-
-
 def create_data(tweet_entity):
     random_int = random.getrandbits(128)
     data_to_upload = {}
@@ -37,7 +34,6 @@ def create_data(tweet_entity):
     data_to_upload["tweet_link"] = tweet_entity.tweet_link
     data_to_upload["tweet_text"] = tweet_entity.tweet_text
     return data_to_upload
-
 
 
 for city in cities:
