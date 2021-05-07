@@ -10,9 +10,9 @@ The bot searches for resources on Twitter using a search query like:
 `<city_name> <resource_name> verified -needed -required -leads -requirement -need -please -filter:retweets`. 
 
 And then the bot searches for people asking for resources using a search query like:
-`<city_name> <resource_name> required OR leads -filter:retweets`
+`<city_name> <resource_name> required OR leads OR need -filter:retweets`
 
-Currently monitored resources: `Oxygen, Remdesiver, ICU beds, Hospital beds, Plasma Donors`
+Currently monitored resources: `Oxygen, Remdesiver, ICU beds, Hospital beds, Plasma Donors, Ventilators`
 
 ### Bot in action:
 ![](images/bot.png)

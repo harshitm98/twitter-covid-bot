@@ -12,7 +12,7 @@ with open("cities", "r") as f:
     cities = cities[:30]
 
 keywords = ['oxygen', 'remdesivir', 'icu', 'hospital beds', 'plasma', 'ventilator'] 
-search_keyword = "required OR leads"
+search_keyword = "required OR leads OR need"
 ignore_bots = "-ShariqueAly -findthecolors"
 filter_retweets = "-filter:retweets"
 
