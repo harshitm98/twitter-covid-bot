@@ -13,8 +13,7 @@ with open("cities", "r") as f:
     cities = f.read().split("\n")
     cities = cities[:30]
 
-
-keywords = ['oxygen', 'remdesivir', 'icu', 'hospital beds', 'plasma', 'ventilator']
+keywords = ['ventilator','icu','remdesivir',  'plasma', 'hospital beds',  'oxygen']
 search_keyword = "verified"
 ignore_keywords = "-needed -required -leads -requirement -need -please"
 ignore_bots = "-ShariqueAly -findthecolors"
@@ -22,6 +21,8 @@ filter_out = "-filter:retweets"
 
 auth = authenticate_search()
 api = tweepy.API(auth, wait_on_rate_limit=True)
+
+
 
 def create_data(tweet_entity):
     random_int = random.getrandbits(128)
@@ -36,9 +37,11 @@ def create_data(tweet_entity):
     return data_to_upload
 
 
+
 for city in cities:
     print("[*] Searching for resources in {}...".format(city))
     list_to_upload = []
+    uploaded_in_this_session = []
     for keyword in keywords:
         old_tweets = 0
         retweets = 0
@@ -47,6 +50,8 @@ for city in cities:
         tweets = api.search(query, count=100, result_type = "recent", tweet_mode = "extended")
         print("Found: {} tweets".format(len(tweets)), end = " ")
         for tweet in tweets:
+            if tweet._json["id"] in uploaded_in_this_session:
+                continue
             found_additional_keywords = [keyword]
             if "retweeted_status" not in tweet._json.keys():
                 tweet_id = tweet._json["id"]
@@ -62,9 +67,11 @@ for city in cities:
                     if additional_keyword in tweet_text and additional_keyword not in found_additional_keywords:
                         found_additional_keywords.append(additional_keyword)
                 list_to_upload.append(create_data(TweetEntity(tweet_id, city, ", ".join(found_additional_keywords), tweet_link, tweet_time, tweet_text)))
+                uploaded_in_this_session.append(tweet_id)
             else:
                 retweets += 1
         print("-> New Tweets: {}".format(len(tweets) - old_tweets - retweets))
     if len(list_to_upload) == 0:
+        print("No resources to upload for {}.".format(city))
         continue
     upload_data(list_to_upload)
