@@ -56,11 +56,15 @@ api_reply_1 = tweepy.API(auth_reply_1, wait_on_rate_limit=True)
 replied_in_this_session = []
 
 replied_count = 0
+search_count = 0
 for city in cities:
     print("[*] Searching for people in help in {}".format(city))
     for keyword in keywords:
         query = city + " " + keyword + " " + search_keyword + " " + ignore_bots
-        tweets = api_search.search(query, count=100, result_type = "recent")
+        if search_count % 2 == 0:
+            tweets = api_reply.search(query, count=100, result_type = "recent")
+        else:
+            tweets = api_reply_1.search(query, count=100, result_type = "recent")
         available_data = get_database(city, keyword)
         reply_string = get_reply_string(available_data, city, keyword)
         if reply_string == None:
