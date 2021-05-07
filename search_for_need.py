@@ -21,6 +21,29 @@ def remove_usernames(tweet_text):
     modified_tweet_text = sub(regex_string_for_username, "", tweet_text).replace("   ", " ").replace("  ", " ")
     return modified_tweet_text
 
+
+def get_reply_string(available_data, city, keyword):
+    reply_string = ""
+    reply_string += "Here's a list of recent resources for " + keyword + " in " + city + ":\r\n"   
+    count = 0
+    list_tweet_text = []
+    for found_tweet in available_data:
+        if count >= 5:
+            break
+        if remove_usernames(found_tweet["tweet_text"]) in list_tweet_text:
+            continue
+        list_tweet_text.append(remove_usernames(found_tweet["tweet_text"]))
+        reply_string += found_tweet["tweet_link"] + "\r\n"
+        count += 1
+    # twitter_query = "https://twitter.com/search?q=" + city + "+verified+" + keyword + "+-needed+-required+-leads&f=live" 
+    if count == 0:
+        print("No leads found for {}.".format(keyword))
+        return None
+    if keyword == "plasma":
+        reply_string += "Find more donors at http://friends2support.org\r\n"
+    reply_string += "Find more resources at http://resourcesbot.surge.sh"
+    return reply_string
+    
 auth_search = authenticate_search()
 api_search = tweepy.API(auth_search, wait_on_rate_limit=True)
 
@@ -39,6 +62,9 @@ for city in cities:
         query = city + " " + keyword + " " + search_keyword + " " + ignore_bots
         tweets = api_search.search(query, count=100, result_type = "recent")
         available_data = get_database(city, keyword)
+        reply_string = get_reply_string(available_data, city, keyword)
+        if reply_string == None:
+            continue
         for tweet in tweets:
             if "retweeted_status" not in tweet._json.keys():
                 tweet_id = tweet._json["id"]
@@ -48,25 +74,6 @@ for city in cities:
                 tweet_text = remove_usernames(tweet_text)
                 tweet_time = tweet._json["created_at"]
                 print("[-] Found a tweet with tweet id: {}".format(tweet_id), end=" -> ")
-                reply_string = ""
-                reply_string += "Here's a list of recent resources for " + keyword + " in " + city + ":\r\n"   
-                count = 0
-                list_tweet_text = []
-                for found_tweet in available_data:
-                    if count >= 5:
-                        break
-                    if remove_usernames(found_tweet["tweet_text"]) in list_tweet_text:
-                        continue
-                    list_tweet_text.append(remove_usernames(found_tweet["tweet_text"]))
-                    reply_string += found_tweet["tweet_link"] + "\r\n"
-                    count += 1
-                # twitter_query = "https://twitter.com/search?q=" + city + "+verified+" + keyword + "+-needed+-required+-leads&f=live" 
-                if count == 0:
-                    print("No leads found for {}.".format(keyword))
-                    continue
-                if keyword == "plasma":
-                    reply_string += "Find more donors at http://friends2support.org\r\n"
-                reply_string += "Find more resources at http://resourcesbot.surge.sh"
                 try:
                     if replied_count % 2 == 0:
                         api_reply.update_status(status = reply_string, in_reply_to_status_id = tweet_id, auto_populate_reply_metadata=True)
