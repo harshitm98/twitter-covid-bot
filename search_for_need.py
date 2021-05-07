@@ -34,7 +34,6 @@ replied_in_this_session = []
 
 replied_count = 0
 for city in cities:
-    
     print("[*] Searching for people in help in {}".format(city))
     for keyword in keywords:
         query = city + " " + keyword + " " + search_keyword + " " + ignore_bots
@@ -50,15 +49,15 @@ for city in cities:
                 tweet_time = tweet._json["created_at"]
                 print("[-] Found a tweet with tweet id: {}".format(tweet_id), end=" -> ")
                 reply_string = ""
-                reply_string += "Here's a list of recent resources based on your keywords:\r\n"   
+                reply_string += "Here's a list of recent resources for " + keyword + " in " + city + ":\r\n"   
                 count = 0
                 list_tweet_text = []
                 for found_tweet in available_data:
                     if count >= 5:
                         break
-                    if found_tweet["tweet_text"] in list_tweet_text:
+                    if remove_usernames(found_tweet["tweet_text"]) in list_tweet_text:
                         continue
-                    list_tweet_text.append(found_tweet["tweet_text"])
+                    list_tweet_text.append(remove_usernames(found_tweet["tweet_text"]))
                     reply_string += found_tweet["tweet_link"] + "\r\n"
                     count += 1
                 # twitter_query = "https://twitter.com/search?q=" + city + "+verified+" + keyword + "+-needed+-required+-leads&f=live" 
